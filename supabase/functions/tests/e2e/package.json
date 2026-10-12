@@ -1,0 +1,1 @@
+{ "name": "regulenta-email-e2e", "private": true, "type": "module", "devDependencies": { "pg": "8.13.1" } }

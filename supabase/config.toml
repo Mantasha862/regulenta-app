@@ -1,0 +1,14 @@
+# Supabase CLI settings for the REGULENTA edge functions (used by `supabase functions deploy`).
+project_id = "xabjjoxpunpbhdkmwkvi"
+
+[functions.send-reminder-emails]
+# called by pg_cron with the x-cron-secret header, not by signed-in users
+verify_jwt = false
+
+[functions.resend-webhook]
+# called by Resend; authenticated by the Svix signature
+verify_jwt = false
+
+[functions.request-contact-verification]
+# called by a signed-in organisation admin from the app
+verify_jwt = true
