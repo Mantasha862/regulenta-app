@@ -27,20 +27,19 @@
 - **Unadopted**: If not adopted at AGM, file within 30 days as provisional.
 - **OPC**: Within **180 days** of close of FY.
 - **No AGM held**: Within 30 days of last date AGM should have been held + statement of reasons.
-- **Penalty**: Company: per-day penalty. MD/CFO/director: separate penalties.
-- **CONFLICT noted**: Due date depends on AGM date; fee table unverified.
-- **Source**: lawx.in/acts/section/24/311/2984; registerkaro.in
-- **Confidence**: HIGH
-- **Status**: DRAFT — CONFLICT needs resolution
+- **Filing fee (per reviewer)**: Standard fee **₹200–₹600** depending on nominal share capital slab. Additional fee: **₹100/day** after the due date (late filing penalty).
+- **Source**: lawx.in/acts/section/24/311/2984; registerkaro.in; reviewer correction
+- **Confidence**: HIGH (fee table corrected by reviewer)
+- **Status**: DRAFT — fee table corrected
 
 ### CA-003 — MGT-7/7A (Annual Return)
 - **Provision**: Companies Act 2013, Section 92
 - **Deadline**: File annual return within **60 days** of AGM.
 - **No AGM**: Still due within 60 days from date AGM should have been held, with explanation.
-- **CONFLICT noted**: MGT-7 vs MGT-7A applicability threshold; 60-day basis needs confirmation.
-- **Source**: thelegalschool.in; getswipe.in
-- **Confidence**: HIGH for 60-day deadline
-- **Status**: DRAFT — 7 vs 7A applicability rules need checking
+- **MGT-7A applicability (per reviewer)**: MGT-7A is for **OPCs and eligible small companies**. Small-company threshold changed w.e.f. **1 December 2025**: paid-up capital up to **₹10 crore** and turnover up to **₹100 crore**. All other companies file MGT-7.
+- **Source**: thelegalschool.in; getswipe.in; reviewer correction
+- **Confidence**: HIGH (deadline and applicability corrected)
+- **Status**: DRAFT — applicability rules corrected
 
 ### CA-004 — ADT-1 (Auditor Appointment)
 - **Provision**: Companies Act 2013, Section 139
@@ -108,10 +107,11 @@
 
 ### CA-012 — PAS-3 (Return of Allotment)
 - **Provision**: Companies Act 2013, Section 39(4); PAS Rules, Rule 12
-- **Deadline**: File PAS-3 within **15 days** of allotment (or within **30 days** per some amendments — needs verification).
-- **Source**: General knowledge
-- **Confidence**: LOW — needs primary text
-- **Status**: DRAFT
+- **Deadline**: File PAS-3 within **15 days** of allotment.
+- **CORRECTION (per reviewer)**: The deadline is **15 days** from allotment, not 30. The 30-day figure in some secondary sources is incorrect.
+- **Source**: General knowledge; reviewer correction
+- **Confidence**: HIGH (corrected by reviewer)
+- **Status**: DRAFT — deadline corrected
 
 ### CA-013 — SH-7 (Notice of Alteration of Share Capital)
 - **Provision**: Companies Act 2013, Section 64
@@ -191,16 +191,16 @@
 - **Status**: DRAFT
 
 ### SEBI-023 — Reg 29 Prior Intimation to Stock Exchange
-- **Provision**: SEBI (LODR) Regulations 2015, Regulation 29 (as amended by SEBI (LODR) Amendment Regulations, 2024 dt. 17-05-2024)
+- **Provision**: SEBI (LODR) Regulations 2015, Regulation 29 (as amended by SEBI (LODR) (Third Amendment) Regulations, 2024, notified **12 December 2024**)
 - **Deadline**:
   - **2 working days** before: buyback, dividend, fund raising, voluntary delisting, bonus
   - **5 days** before: financial results
   - **11 working days** before: changes in nature of securities
   - Intimation date and meeting date excluded from count.
-- **CONFLICT**: 2024 amendment (17-05-2024) modified/substituted parts of Reg 29. The exact effective date of changes needs verification from official SEBI text.
-- **Source**: taxmann.com; ca2013.com/lodr-regulation-29
-- **Confidence**: MEDIUM — 2024 amendment text not fully read
-- **Status**: DRAFT — CONFLICT needs resolution
+- **CORRECTION (per reviewer)**: The relevant amendment is the **Third Amendment Regulations, 2024**, notified on **12 December 2024** (not 17-05-2024 as previously cited). Verify exact substitutions from the December 2024 amendment PDF.
+- **Source**: taxmann.com; ca2013.com/lodr-regulation-29; reviewer correction
+- **Confidence**: MEDIUM — December 2024 amendment PDF not yet read
+- **Status**: DRAFT — amendment date corrected; full text verification still needed
 
 ### SEBI-024 — Reg 30 + Schedule III Event Disclosure
 - **Provision**: SEBI (LODR) Regulations 2015, Regulation 30 + Schedule III
@@ -225,17 +225,19 @@
 
 ### SEBI-027 — Reg 40(9) Share Transfer Agent Compliance
 - **Provision**: SEBI (LODR) Regulations 2015, Regulation 40(9)
-- **Note**: This regulation was **omitted** w.e.f. 13-12-2024 (per SEBI amendment). If confirmed, this rule may need to be removed or marked obsolete.
-- **Source**: Earlier research
-- **Confidence**: LOW — amendment date 12 vs 13 Dec 2024 disputed
-- **Status**: DRAFT — NEEDS CONFIRMATION
+- **Note**: Reported as part of the **SEBI (LODR) (Third Amendment) Regulations, 2024** (notified 12 December 2024). Whether this regulation was omitted or substituted must be confirmed from the amendment PDF before marking obsolete.
+- **CORRECTION (per reviewer)**: Do **not** mark as omitted until the December 2024 amendment PDF is obtained and confirmed.
+- **Source**: Earlier research; reviewer correction
+- **Confidence**: LOW — awaiting amendment PDF confirmation
+- **Status**: DRAFT — hold; do not remove until PDF verified
 
 ### SEBI-028 — Reg 7(3) Share Transfer Agent Certificate
 - **Provision**: SEBI (LODR) Regulations 2015, Regulation 7(3)
-- **CONFLICT**: Also reported as omitted w.e.f. 12 or 13 Dec 2024. If confirmed, may need removal.
-- **Source**: Earlier research
-- **Confidence**: LOW
-- **Status**: DRAFT — CONFLICT
+- **Note**: Also reported as part of the December 2024 amendment package. Whether omitted or substituted must be confirmed from the amendment PDF.
+- **CORRECTION (per reviewer)**: Do **not** mark as omitted until the December 2024 amendment PDF is obtained and confirmed. Same package as Reg 40(9) above.
+- **Source**: Earlier research; reviewer correction
+- **Confidence**: LOW — awaiting amendment PDF confirmation
+- **Status**: DRAFT — hold; do not remove until PDF verified
 
 ### SEBI-029 — PIT Reg 7 (Insider Trading — Continual Disclosures)
 - **Provision**: SEBI (Prohibition of Insider Trading) Regulations 2015, Regulation 7
@@ -305,14 +307,14 @@
 ## 4. LABOUR (5 rules)
 
 ### LAB-037 — EPF Contribution
-- **Provision**: Employees' Provident Funds Scheme, **2026** (G.S.R. 525(E) dt. 29-06-2026, supersedes the 1952 Scheme)
+- **Provision**: Employees' Provident Funds Scheme, **1952** (as amended)
 - **Deadline**: Within **15 days** from close of every month (effectively ~15th of following month).
 - **Rate**: Employer 12% + Employee 12% of basic + DA (for establishments with 20+ employees).
 - **ECR filing**: Monthly electronic challan-cum-return.
-- **IMPORTANT**: The 2026 Scheme supersedes the 1952 Scheme. Any rule citing the 1952 scheme is STALE.
-- **Source**: ascent-hr.com; moneylife.in
-- **Confidence**: HIGH
-- **Status**: DRAFT
+- **CORRECTION (per reviewer)**: The 1952 Scheme has **NOT** been superseded. G.S.R. 749(E) (the "2025 instrument") is a **temporary amendment scheme**, operative only Nov 2025 – Apr 2026. The parent statute and the 1952 Scheme remain in force.
+- **Source**: ascent-hr.com; moneylife.in; reviewer correction
+- **Confidence**: HIGH (deadline); corrected re scheme version
+- **Status**: DRAFT — scheme version corrected
 
 ### LAB-038 — ESI Contribution
 - **Provision**: ESI Act 1948; ESI (General) Regulations
@@ -340,29 +342,30 @@
 
 ### LAB-041 — State LWF / Professional Tax / S&E Act
 - **Provision**: Various state-specific statutes
-- **CONFLICT**: This is inherently state-specific. No single national deadline exists.
+- **CORRECTION (per reviewer)**: No single national deadline exists. This must be split into **state-specific obligations only for states where the entity has employees**. A blanket national rule is incorrect.
 - **Examples**:
   - Professional Tax: varies by state (Maharashtra: monthly by last day; Karnataka: by 20th)
   - Labour Welfare Fund: varies (Maharashtra: 2x/year by 15 Jan & 15 Jul; Karnataka: annual)
   - Shops & Establishments: renewal dates vary
-- **Source**: General knowledge
-- **Confidence**: LOW — state-specific, no single national deadline
-- **Status**: DRAFT — CONFLICT (needs per-state breakdown or user decision on which states to cover)
+- **Action needed**: User must specify which states the entity operates in. Only those states' deadlines will be tracked.
+- **Source**: General knowledge; reviewer correction
+- **Confidence**: LOW — inherently state-specific; no single national rule possible
+- **Status**: DRAFT — awaiting user input on applicable states
 
 ---
 
 ## 5. INCOME TAX (6 rules)
 
 ### TAX-042 — TDS Payment
-- **Provision**: Income-tax Act, Section 200 read with Rule 30 (1961 Act numbering; if 2025 Act applies, section numbers differ)
+- **Provision**: Income-tax Act, 1961, Section 200 read with Rule 30
 - **Deadline**: By **7th** of following month. March deductions: by **30 April**.
-- **ISSUE**: Queue mixes Income-tax Act 2025 and 1961 Act numbering. Needs resolution.
+- **Note**: There is no "Income Tax Act 2025". The operative statute remains the Income-tax Act, 1961 (as amended). All section references in this category use 1961 Act numbering.
 - **Source**: bajajfinserv.in; motilaloswal.com
-- **Confidence**: HIGH for deadline; MEDIUM for section numbering
-- **Status**: DRAFT
+- **Confidence**: HIGH
+- **Status**: DRAFT — ~~ISSUE resolved per reviewer correction~~
 
 ### TAX-043 — TDS Return (24Q/26Q/27Q)
-- **Provision**: Income-tax Act, Section 200(3); Rules
+- **Provision**: Income-tax Act, 1961, Section 200(3); Rules
 - **Deadline**: Quarterly filing:
   - Q1 (Apr–Jun): **31 July**
   - Q2 (Jul–Sep): **31 October**
@@ -373,14 +376,14 @@
 - **Status**: DRAFT
 
 ### TAX-044 — Form 16/16A Issuance
-- **Provision**: Income-tax Act; Rules
+- **Provision**: Income-tax Act, 1961; Rules
 - **Deadline**: Form 16 (salary): by **15 June**. Form 16A (non-salary): within **15 days** of TDS return due date.
 - **Source**: bajajfinserv.in
 - **Confidence**: HIGH
 - **Status**: DRAFT
 
 ### TAX-045 — Advance Tax
-- **Provision**: Income-tax Act, Section 208-211
+- **Provision**: Income-tax Act, 1961, Sections 208–211
 - **Deadline**: Quarterly installments:
   - By **15 June**: 15% of estimated tax
   - By **15 September**: 45% cumulative
@@ -391,7 +394,7 @@
 - **Status**: DRAFT
 
 ### TAX-046 — Tax Audit Report / ITR
-- **Provision**: Income-tax Act, Section 44AB (tax audit); Section 139 (ITR)
+- **Provision**: Income-tax Act, 1961, Section 44AB (tax audit); Section 139 (ITR)
 - **Deadline**: Tax audit report: **30 September**. ITR for audit cases: **31 October**. ITR for non-audit: **31 July**.
 - **Transfer pricing cases (s.92E)**: **30 November**.
 - **Source**: General knowledge
@@ -399,7 +402,7 @@
 - **Status**: DRAFT
 
 ### TAX-047 — Form 3CEB (Transfer Pricing Report)
-- **Provision**: Income-tax Act, Section 92E
+- **Provision**: Income-tax Act, 1961, Section 92E
 - **Deadline**: **30 November** (for international/specified domestic transactions).
 - **Source**: General knowledge
 - **Confidence**: MEDIUM
@@ -446,18 +449,18 @@
 
 ---
 
-## SUMMARY OF ISSUES REQUIRING HUMAN DECISION
+## SUMMARY OF ISSUES — STATUS AFTER REVIEWER CORRECTIONS
 
-| # | Issue | Impact |
-|---|---|---|
-| 1 | **Income Tax Act version**: Rules 42–44 cite 2025 Act, rules 45–47 cite 1961 Act | Section numbers differ; pick one consistent version |
-| 2 | **SEBI Reg 29 amendment (17-05-2024)**: Parts substituted/omitted | Need official SEBI gazette text for exact effective date |
-| 3 | **SEBI Reg 40(9) and 7(3) omission**: Both reported omitted Dec 2024 | If confirmed, remove from rule set |
-| 4 | **EPF Scheme 2026 vs 1952**: G.S.R. 525(E) supersedes old scheme | Update any rule citing 1952 scheme |
-| 5 | **LAB-041 State-specific**: No national deadline for PT/LWF/S&E | Decide which states to cover |
-| 6 | **CA-003 MGT-7 vs 7A**: Applicability threshold | Confirm turnover threshold for 7A |
-| 7 | **CA-002 AOC-4 fee table**: Not verified | Need MCA fee schedule |
-| 8 | **CA-012 PAS-3 deadline**: 15 days vs 30 days | Conflicting secondary sources |
+| # | Issue | Status | Resolution |
+|---|---|---|---|
+| 1 | **Income Tax Act version** | RESOLVED | No "Income Tax Act 2025" exists. All rules now cite Income-tax Act, 1961. |
+| 2 | **SEBI Reg 29 amendment** | PARTIALLY RESOLVED | Amendment is Third Amendment Regs, 2024 (notified **12 Dec 2024**, not 17 May). Full text still needed. |
+| 3 | **SEBI Reg 40(9) and 7(3) omission** | ON HOLD | Part of Dec 2024 package. Do **not** mark omitted until amendment PDF confirmed. |
+| 4 | **EPF Scheme 2026 vs 1952** | RESOLVED | 1952 Scheme NOT superseded. G.S.R. 749(E) is temporary (Nov 2025–Apr 2026 only). |
+| 5 | **LAB-041 State-specific** | OPEN — awaiting user input | Must specify which states the entity has employees in. |
+| 6 | **CA-003 MGT-7 vs 7A** | RESOLVED | MGT-7A for OPCs + small companies (threshold: paid-up ≤₹10 Cr, turnover ≤₹100 Cr from 1 Dec 2025). |
+| 7 | **CA-002 AOC-4 fee table** | RESOLVED | ₹200–₹600 by share capital slab; ₹100/day additional after due date. |
+| 8 | **CA-012 PAS-3 deadline** | RESOLVED | **15 days** from allotment (not 30). |
 
 ## CONFIDENCE RATINGS
 - **HIGH** (22 rules): Multiple consistent secondary sources; deadline well-established
