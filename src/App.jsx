@@ -96,7 +96,7 @@ function Shell({ session, roles, deepObligation }) {
   const initials = (session.user.email || '').split('@')[0].split('.').map(s => s[0]?.toUpperCase()).join('').slice(0, 2)
 
   const navItems = [
-    { key: 'dashboard', icon: 'grid', label: 'Dashboard' },
+    { key: 'dashboard', icon: 'grid', label: 'Workspace' },
     { key: 'companies', icon: 'building', label: 'Companies' },
     { key: 'compliance', icon: 'shield', label: 'Compliance' },
     { key: 'notifications', icon: 'bell', label: 'Notifications', count: unread || null },
@@ -121,7 +121,7 @@ function Shell({ session, roles, deepObligation }) {
   else if (view === 'notifications') body = <Notifications org={org} go={go} onChange={() => setView('notifications')} />
   else if (view === 'settings') body = <Settings org={org} isAdmin={isAdmin} />
 
-  const topTitle = view === 'dashboard' ? 'Dashboard'
+  const topTitle = view === 'dashboard' ? 'Workspace'
     : view === 'companies' ? 'Companies'
     : view === 'compliance' ? 'Compliance'
     : view === 'notifications' ? 'Notifications'
@@ -129,6 +129,7 @@ function Shell({ session, roles, deepObligation }) {
     : view === 'review' ? 'Review queue'
     : view === 'regintel' ? 'Regulatory intelligence'
     : view === 'health' ? 'Delivery health' : ''
+  const topSub = view === 'dashboard' ? new Date().toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }) + ' · all times IST' : null
 
   return (
     <div className="shell">
@@ -174,11 +175,13 @@ function Shell({ session, roles, deepObligation }) {
       {/* ─── main area ─── */}
       <main className="main">
         <div className="top" style={{ justifyContent: 'space-between' }}>
-          <div className="row g12">
-            <h1 className="t-h2">{topTitle}</h1>
+          <div>
+            <h1 className="t-h1">{topTitle}</h1>
+            {topSub && <div className="t-sm faint">{topSub}</div>}
           </div>
           <div className="row g8">
             <ThemeToggle />
+            {view === 'dashboard' && <button className="btn primary sm hide-m" onClick={() => go('companies')}><Ic name="plus" />Add client</button>}
           </div>
         </div>
         <div className="page" style={{ padding: 20, flex: 1 }}>{body}</div>
@@ -186,7 +189,7 @@ function Shell({ session, roles, deepObligation }) {
 
       {/* ─── bottom tabbar (mobile) ─── */}
       <nav className="tabbar" aria-label="Main">
-        <button aria-current={view === 'dashboard' ? 'page' : undefined} onClick={() => go('dashboard')}><Ic name="grid" className="ic-lg" />Dashboard</button>
+        <button aria-current={view === 'dashboard' ? 'page' : undefined} onClick={() => go('dashboard')}><Ic name="grid" className="ic-lg" />Workspace</button>
         <button aria-current={view === 'companies' ? 'page' : undefined} onClick={() => go('companies')}><Ic name="building" className="ic-lg" />Companies</button>
         <button aria-current={view === 'compliance' ? 'page' : undefined} onClick={() => go('compliance')}><Ic name="shield" className="ic-lg" />Compliance</button>
         {staff
