@@ -91,7 +91,7 @@ function CompanyDetail({ org, c, isAdmin, go, onEdit, onChanged }) {
         <div className="row"><button className="ghost" onClick={onEdit}>Edit details</button>{isAdmin && <Confirm label="Archive" onYes={archive} text="Hide this company? Its records are kept." />}</div></div>
       <p className="muted">{c.entity_type}{c.cin_or_llpin ? ` · ${c.cin_or_llpin}` : ''} · FY ends {MONTHS[c.fy_end_month - 1]}{c.state ? ` · ${c.state}` : ''}{c.incorporation_date ? ` · incorporated ${fmtDate(c.incorporation_date)}` : ''}</p>
       <nav className="subtabs">{[['profile', 'Applicability facts'], ['contacts', 'Contacts'], ['deadlines', 'Generate deadlines'], ['events', 'Record an event']].map(([k, l]) =>
-        <button key={k} className={tab === k ? 'on' : 'ghost'} onClick={() => setTab(k)}>{l}</button>)}</nav>
+        <button key={k} aria-selected={tab === k} onClick={() => setTab(k)}>{l}</button>)}</nav>
       {tab === 'profile' && <Facts c={c} onSaved={onChanged} />}
       {tab === 'contacts' && <Contacts org={org} c={c} isAdmin={isAdmin} />}
       {tab === 'deadlines' && <Generate c={c} isAdmin={isAdmin} go={go} />}

@@ -35,15 +35,15 @@ export default function RegIntel({ roles }) {
     <section>
       <h2>Regulatory intelligence</h2>
       <p className="muted">Detected publications stay here, labelled by legal status, until a reviewer verifies them against the original and approves a rule version. Nothing here changes a client's obligations by itself.</p>
-      <div className="tiles">
+      <div className="kpis">
         {[['Logged changes', v.ch.length], ['Awaiting review', v.ch.filter(c => ['new', 'pending_review', 'ai_researched'].includes(c.status)).length],
           ['Approved', v.ch.filter(c => c.status === 'approved').length], ['Effective soon / future', soon],
           ['Interpretation required', v.ch.filter(c => c.interpretation_required).length], ['Failed retrievals', v.src.filter(s => s.status === 'failing').length + v.ch.filter(c => c.regulatory_documents?.retrieval_status === 'failed').length],
           ['Sources needing verification', v.src.filter(s => s.status === 'needs_verification').length]].map(([l, n]) =>
-          <div key={l} className="tile static"><span className="n">{n}</span><span>{l}</span></div>)}
+          <div key={l} className="kpi"><b>{n}</b><span>{l}</span></div>)}
       </div>
       <nav className="subtabs">{[['changes', 'Changes'], ['log', 'Log a publication'], ['sources', 'Sources & authorities']].map(([k, l]) =>
-        <button key={k} className={tab === k ? 'on' : 'ghost'} onClick={() => setTab(k)}>{l}</button>)}</nav>
+        <button key={k} aria-selected={tab === k} onClick={() => setTab(k)}>{l}</button>)}</nav>
 
       {tab === 'changes' && (
         <div className="split inner">

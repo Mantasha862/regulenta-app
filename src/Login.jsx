@@ -24,8 +24,8 @@ export default function Login() {
   return (
     <main className="login">
       <form onSubmit={submit} className="card">
-        <h1 className="brand">REGULENTA</h1>
-        <p className="muted">Compliance tracking for company secretaries, law firms and companies</p>
+        <div className="brandmark" style={{ justifyContent: 'center', padding: '0 0 8px' }}><b>REGULENTA</b></div>
+        <p className="muted" style={{ textAlign: 'center' }}>Compliance tracking for company secretaries, law firms and companies</p>
         <label>Email<input type="email" required value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" /></label>
         {mode !== 'reset' && <label>Password<input type="password" required minLength={8} value={password} onChange={e => setPassword(e.target.value)} autoComplete={mode === 'in' ? 'current-password' : 'new-password'} /></label>}
         <button disabled={busy}>{mode === 'in' ? 'Sign in' : mode === 'up' ? 'Create account' : 'Send reset link'}</button>

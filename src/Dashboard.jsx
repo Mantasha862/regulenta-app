@@ -35,14 +35,14 @@ export default function Dashboard({ org, isAdmin, go }) {
 
   const cards = [
     ['Due in next 30 days', due30.length, () => go('compliance', { preset: 'due30' })],
-    ['Due today', dueToday.length, () => go('compliance', { preset: 'today' }), dueToday.length ? 'hot' : ''],
+    ['Due today', dueToday.length, () => go('compliance', { preset: 'today' }), dueToday.length ? 'warn' : ''],
     ['Overdue', overdue.length, () => go('compliance', { preset: 'overdue' }), overdue.length ? 'bad' : ''],
     ['High / critical alerts (7 days)', critical.length, () => go('compliance', { preset: 'critical', ids: [...critIds] })],
     ['Pending approvals', approvals.length, () => go('compliance', { preset: 'approvals' })],
     ['Missing evidence', missingEv.length, () => go('compliance', { preset: 'evidence' })],
     ['Unread notifications', data.unread, () => go('notifications')],
     ...(isAdmin ? [['Email delivery failures', data.failures, () => go('settings'), data.failures ? 'bad' : '']] : []),
-    ...(proposed.length ? [['Proposed deadlines awaiting activation', proposed.length, () => go('companies'), 'hot']] : []),
+    ...(proposed.length ? [['Proposed deadlines awaiting activation', proposed.length, () => go('companies'), 'warn']] : []),
   ]
 
   return (
@@ -52,10 +52,10 @@ export default function Dashboard({ org, isAdmin, go }) {
         <div className="warn">No deadlines yet. Add a company, complete its profile, then generate deadlines from rules that reviewers have verified and approved.
           Only approved rules with primary-source evidence produce deadlines.</div>
       )}
-      <div className="tiles">
+      <div className="kpis">
         {cards.map(([label, n, onClick, tone]) => (
-          <button key={label} className={`tile ${tone || ''}`} onClick={onClick}>
-            <span className="n">{n}</span><span>{label}</span>
+          <button key={label} className={`kpi ${tone || ''}`} onClick={onClick}>
+            <b>{n}</b><span>{label}</span>
           </button>
         ))}
       </div>

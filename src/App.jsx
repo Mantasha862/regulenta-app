@@ -12,7 +12,26 @@ import Notifications from './Notifications.jsx'
 import Settings from './Settings.jsx'
 import { must } from './lib.js'
 
+function Ic({ name, className = '' }) {
+  return <i className={`ic i-${name} ${className}`} aria-hidden="true" />
+}
+
+function ThemeToggle() {
+  const [theme, setTheme] = useState(() => document.documentElement.getAttribute('data-theme') || 'light')
+  function toggle() {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    document.documentElement.setAttribute('data-theme', next)
+    setTheme(next)
+    try { localStorage.setItem('regulenta-theme', next) } catch {}
+  }
+  return <button className="btn icon sm" aria-label="Switch theme" onClick={toggle}><Ic name={theme === 'dark' ? 'sun' : 'moon'} /></button>
+}
+
 export default function App() {
+  useEffect(() => {
+    try { const t = localStorage.getItem('regulenta-theme'); if (t) document.documentElement.setAttribute('data-theme', t) } catch {}
+  }, [])
+
   const params = new URLSearchParams(window.location.search)
   const verifyToken = params.get('verify_email')
   const [session, setSession] = useState(undefined)
@@ -29,11 +48,21 @@ export default function App() {
       .then(({ data }) => setRoles((data || []).map(r => r.role)))
   }, [session])
 
-  if (verifyToken) return <VerifyEmail token={verifyToken} />
-  if (session === undefined) return <div className="center">Loading…</div>
-  if (!session) return <Login />
-  if (roles === null) return <div className="center">Checking access…</div>
-  return <Shell session={session} roles={roles} deepObligation={params.get('obligation')} />
+  if (verifyToken) return <div className="app"><VerifyEmail token={verifyToken} /></div>
+  if (session === undefined) return <div className="app"><div className="center">Loading…</div></div>
+  if (!session) return <div className="app"><Login /></div>
+  if (roles === null) return <div className="app"><div className="center">Checking access…</div></div>
+  return <div className="app"><Shell session={session} roles={roles} deepObligation={params.get('obligation')} /></div>
+}
+
+function NavItem({ icon, label, count, active, onClick }) {
+  return (
+    <button className="nav" aria-current={active ? 'page' : undefined} onClick={onClick}>
+      <Ic name={icon} />
+      {label}
+      {count ? <span className="cnt">{count}</span> : null}
+    </button>
+  )
 }
 
 function Shell({ session, roles, deepObligation }) {
@@ -64,41 +93,107 @@ function Shell({ session, roles, deepObligation }) {
   const org = orgs?.find(o => o.id === orgId)
   const go = (v, f = {}) => { setFilter(f); setView(v) }
 
-  const tabs = [
-    ['dashboard', 'Dashboard'], ['companies', 'Companies'], ['compliance', 'Compliance'],
-    ['notifications', `Notifications${unread ? ` (${unread})` : ''}`], ['settings', 'Reminders & recipients'],
+  const initials = (session.user.email || '').split('@')[0].split('.').map(s => s[0]?.toUpperCase()).join('').slice(0, 2)
+
+  const navItems = [
+    { key: 'dashboard', icon: 'grid', label: 'Dashboard' },
+    { key: 'companies', icon: 'building', label: 'Companies' },
+    { key: 'compliance', icon: 'shield', label: 'Compliance' },
+    { key: 'notifications', icon: 'bell', label: 'Notifications', count: unread || null },
+    { key: 'settings', icon: 'sliders', label: 'Settings' },
   ]
-  const staffTabs = [['review', 'Review queue'], ['regintel', 'Regulatory intelligence'], ['health', 'Delivery health']]
+  const staffItems = [
+    { key: 'review', icon: 'search', label: 'Review queue' },
+    { key: 'regintel', icon: 'gavel', label: 'Regulatory intelligence' },
+    { key: 'health', icon: 'book', label: 'Delivery health' },
+  ]
 
   let body
-  if (orgs === null) body = <div className="center">Loading…</div>
-  else if (!orgs.length && !staffTabs.some(t => t[0] === view)) body = <CreateOrg onDone={async id => { setOrgId(id); await loadOrgs() }} />
+  if (orgs === null) body = <div className="center" style={{ minHeight: '60vh' }}>Loading…</div>
+  else if (!orgs.length && !staffItems.some(t => t.key === view)) body = <CreateOrg onDone={async id => { setOrgId(id); await loadOrgs() }} />
   else if (view === 'review') body = <Admin roles={roles} />
   else if (view === 'regintel') body = <RegIntel roles={roles} />
   else if (view === 'health') body = <Health />
-  else if (!org) body = <div className="center">Select an organisation.</div>
+  else if (!org) body = <div className="center" style={{ minHeight: '60vh' }}>Select an organisation.</div>
   else if (view === 'dashboard') body = <Dashboard org={org} isAdmin={isAdmin} go={go} />
   else if (view === 'companies') body = <Companies org={org} isAdmin={isAdmin} go={go} />
   else if (view === 'compliance') body = <Compliance org={org} isAdmin={isAdmin} user={session.user} filter={filter} setFilter={setFilter} />
   else if (view === 'notifications') body = <Notifications org={org} go={go} onChange={() => setView('notifications')} />
   else if (view === 'settings') body = <Settings org={org} isAdmin={isAdmin} />
 
+  const topTitle = view === 'dashboard' ? 'Dashboard'
+    : view === 'companies' ? 'Companies'
+    : view === 'compliance' ? 'Compliance'
+    : view === 'notifications' ? 'Notifications'
+    : view === 'settings' ? 'Settings'
+    : view === 'review' ? 'Review queue'
+    : view === 'regintel' ? 'Regulatory intelligence'
+    : view === 'health' ? 'Delivery health' : ''
+
   return (
     <div className="shell">
-      <header className="top">
-        <strong className="brand">REGULENTA</strong>
-        {orgs?.length > 1 && <select className="orgsel" value={orgId || ''} onChange={e => setOrgId(e.target.value)}>{orgs.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}</select>}
-        {orgs?.length === 1 && <span className="muted">{orgs[0].name}</span>}
-        <span className="grow" />
-        <span className="muted small">{session.user.email}{myRole ? ` · ${myRole}` : ''}{staff ? ` · staff: ${roles.join(', ')}` : ''}</span>
-        <button className="ghost" onClick={() => supabase.auth.signOut()}>Sign out</button>
-      </header>
-      <nav className="nav">
-        {orgs?.length > 0 && tabs.map(([k, l]) => <button key={k} className={view === k ? 'on' : 'ghost'} onClick={() => go(k)}>{l}</button>)}
-        {staff && <span className="sep" />}
-        {staff && staffTabs.map(([k, l]) => <button key={k} className={view === k ? 'on' : 'ghost'} onClick={() => go(k)}>{l}</button>)}
+      {/* ─── sidebar (desktop) ─── */}
+      <aside className="side" style={{ gap: 6 }}>
+        <div className="brandmark" style={{ padding: '6px 8px 14px' }}>
+          <b>REGULENTA</b>
+        </div>
+        {orgs?.length > 1 && (
+          <button className="btn" style={{ justifyContent: 'space-between', width: '100%', marginBottom: 10 }}>
+            <span className="row g8"><Ic name="building" />{org?.name || 'Select org'}</span>
+            <Ic name="down" />
+          </button>
+        )}
+        {orgs?.length > 1 && (
+          <select className="orgsel" value={orgId || ''} onChange={e => setOrgId(e.target.value)} style={{ marginBottom: 10, width: '100%' }}>
+            {orgs.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+          </select>
+        )}
+
+        {orgs?.length > 0 && navItems.map(n => (
+          <NavItem key={n.key} icon={n.icon} label={n.label} count={n.count} active={view === n.key} onClick={() => go(n.key)} />
+        ))}
+
+        {staff && <div className="sf">Staff</div>}
+        {staff && staffItems.map(n => (
+          <NavItem key={n.key} icon={n.icon} label={n.label} active={view === n.key} onClick={() => go(n.key)} />
+        ))}
+
+        <div style={{ flex: 1 }} />
+
+        <div className="row g12" style={{ padding: '10px 8px', borderTop: '1px solid var(--line)', marginTop: 12 }}>
+          <div className="avatar">{initials}</div>
+          <div>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>{session.user.email?.split('@')[0]}</div>
+            <div className="t-xs faint">{myRole || 'member'}{staff ? ` · staff` : ''}</div>
+            {orgs?.length === 1 && <div className="t-xs faint">{orgs[0].name}</div>}
+          </div>
+        </div>
+        <button className="btn sm" onClick={() => supabase.auth.signOut()}>Sign out</button>
+      </aside>
+
+      {/* ─── main area ─── */}
+      <main className="main">
+        <div className="top" style={{ justifyContent: 'space-between' }}>
+          <div className="row g12">
+            <h1 className="t-h2">{topTitle}</h1>
+          </div>
+          <div className="row g8">
+            <ThemeToggle />
+          </div>
+        </div>
+        <div className="page" style={{ padding: 20, flex: 1 }}>{body}</div>
+      </main>
+
+      {/* ─── bottom tabbar (mobile) ─── */}
+      <nav className="tabbar" aria-label="Main">
+        <button aria-current={view === 'dashboard' ? 'page' : undefined} onClick={() => go('dashboard')}><Ic name="grid" className="ic-lg" />Dashboard</button>
+        <button aria-current={view === 'companies' ? 'page' : undefined} onClick={() => go('companies')}><Ic name="building" className="ic-lg" />Companies</button>
+        <button aria-current={view === 'compliance' ? 'page' : undefined} onClick={() => go('compliance')}><Ic name="shield" className="ic-lg" />Compliance</button>
+        {staff
+          ? <button aria-current={['review', 'regintel', 'health'].includes(view) ? 'page' : undefined} onClick={() => go('review')}><Ic name="eye" className="ic-lg" />Staff</button>
+          : <button aria-current={view === 'notifications' ? 'page' : undefined} onClick={() => go('notifications')}><Ic name="bell" className="ic-lg" />Alerts</button>
+        }
       </nav>
-      <main className="page">{body}</main>
     </div>
   )
 }
