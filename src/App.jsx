@@ -10,6 +10,7 @@ import Companies from './Companies.jsx'
 import Compliance from './Compliance.jsx'
 import Notifications from './Notifications.jsx'
 import Settings from './Settings.jsx'
+import Splash, { Brandmark } from './Splash.jsx'
 import { must } from './lib.js'
 
 function Ic({ name, className = '' }) {
@@ -36,6 +37,9 @@ export default function App() {
   const verifyToken = params.get('verify_email')
   const [session, setSession] = useState(undefined)
   const [roles, setRoles] = useState(null)
+  const [showSplash, setShowSplash] = useState(() => {
+    try { return !sessionStorage.getItem('regulenta-splash-seen') } catch { return true }
+  })
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
@@ -48,10 +52,16 @@ export default function App() {
       .then(({ data }) => setRoles((data || []).map(r => r.role)))
   }, [session])
 
+  function dismissSplash() {
+    setShowSplash(false)
+    try { sessionStorage.setItem('regulenta-splash-seen', '1') } catch {}
+  }
+
   if (verifyToken) return <div className="app"><VerifyEmail token={verifyToken} /></div>
   if (session === undefined) return <div className="app"><div className="center">Loading…</div></div>
   if (!session) return <div className="app"><Login /></div>
   if (roles === null) return <div className="app"><div className="center">Checking access…</div></div>
+  if (showSplash) return <div className="app"><Splash onEnter={dismissSplash} /></div>
   return <div className="app"><Shell session={session} roles={roles} deepObligation={params.get('obligation')} /></div>
 }
 
@@ -73,6 +83,7 @@ function Shell({ session, roles, deepObligation }) {
   const [filter, setFilter] = useState(deepObligation ? { obligation: deepObligation } : {})
   const [unread, setUnread] = useState(0)
   const [myRole, setMyRole] = useState(null)
+  const [viewKey, setViewKey] = useState(0) // for re-triggering animations
 
   async function loadOrgs() {
     const data = must(await supabase.from('orgs').select('id,name,type,plan').order('created_at'))
@@ -91,15 +102,21 @@ function Shell({ session, roles, deepObligation }) {
 
   const isAdmin = ['owner', 'admin'].includes(myRole)
   const org = orgs?.find(o => o.id === orgId)
-  const go = (v, f = {}) => { setFilter(f); setView(v) }
+  const go = (v, f = {}) => {
+    setFilter(f)
+    setView(v)
+    setViewKey(k => k + 1) // force re-mount for animations
+  }
 
   const initials = (session.user.email || '').split('@')[0].split('.').map(s => s[0]?.toUpperCase()).join('').slice(0, 2)
+  const userName = (session.user.email || '').split('@')[0].split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ')
 
   const navItems = [
     { key: 'dashboard', icon: 'grid', label: 'Workspace' },
-    { key: 'companies', icon: 'building', label: 'Companies' },
-    { key: 'compliance', icon: 'shield', label: 'Compliance' },
-    { key: 'notifications', icon: 'bell', label: 'Notifications', count: unread || null },
+    { key: 'companies', icon: 'building', label: 'Clients', count: null },
+    { key: 'ask', icon: 'chat', label: 'Ask REGULENTA' },
+    { key: 'compliance', icon: 'file', label: 'Documents' },
+    { key: 'notifications', icon: 'bell', label: 'Alerts', count: unread || null },
     { key: 'settings', icon: 'sliders', label: 'Settings' },
   ]
   const staffItems = [
@@ -114,6 +131,7 @@ function Shell({ session, roles, deepObligation }) {
   else if (view === 'review') body = <Admin roles={roles} />
   else if (view === 'regintel') body = <RegIntel roles={roles} />
   else if (view === 'health') body = <Health />
+  else if (view === 'ask') body = <div className="center" style={{ minHeight: '60vh' }}><Ic name="chat" className="ic-lg" /><p className="muted">Ask REGULENTA — coming soon</p></div>
   else if (!org) body = <div className="center" style={{ minHeight: '60vh' }}>Select an organisation.</div>
   else if (view === 'dashboard') body = <Dashboard org={org} isAdmin={isAdmin} go={go} />
   else if (view === 'companies') body = <Companies org={org} isAdmin={isAdmin} go={go} />
@@ -122,10 +140,11 @@ function Shell({ session, roles, deepObligation }) {
   else if (view === 'settings') body = <Settings org={org} isAdmin={isAdmin} />
 
   const topTitle = view === 'dashboard' ? 'Workspace'
-    : view === 'companies' ? 'Companies'
-    : view === 'compliance' ? 'Compliance'
-    : view === 'notifications' ? 'Notifications'
+    : view === 'companies' ? 'Clients'
+    : view === 'compliance' ? 'Documents'
+    : view === 'notifications' ? 'Alerts'
     : view === 'settings' ? 'Settings'
+    : view === 'ask' ? 'Ask REGULENTA'
     : view === 'review' ? 'Review queue'
     : view === 'regintel' ? 'Regulatory intelligence'
     : view === 'health' ? 'Delivery health' : ''
@@ -135,38 +154,46 @@ function Shell({ session, roles, deepObligation }) {
     <div className="shell">
       {/* ─── sidebar (desktop) ─── */}
       <aside className="side" style={{ gap: 6 }}>
-        <div className="brandmark" style={{ padding: '6px 8px 14px' }}>
-          <b>REGULENTA</b>
-        </div>
-        {orgs?.length > 1 && (
+        <Brandmark size={34} />
+
+        {orgs?.length > 1 ? (
           <button className="btn" style={{ justifyContent: 'space-between', width: '100%', marginBottom: 10 }}>
             <span className="row g8"><Ic name="building" />{org?.name || 'Select org'}</span>
             <Ic name="down" />
           </button>
-        )}
-        {orgs?.length > 1 && (
-          <select className="orgsel" value={orgId || ''} onChange={e => setOrgId(e.target.value)} style={{ marginBottom: 10, width: '100%' }}>
-            {orgs.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-          </select>
+        ) : orgs?.length === 1 && (
+          <button className="btn" style={{ justifyContent: 'space-between', width: '100%', marginBottom: 10 }}>
+            <span className="row g8"><Ic name="building" />{org?.name}</span>
+            <Ic name="down" />
+          </button>
         )}
 
         {orgs?.length > 0 && navItems.map(n => (
           <NavItem key={n.key} icon={n.icon} label={n.label} count={n.count} active={view === n.key} onClick={() => go(n.key)} />
         ))}
 
-        {staff && <div className="sf">Staff</div>}
-        {staff && staffItems.map(n => (
-          <NavItem key={n.key} icon={n.icon} label={n.label} active={view === n.key} onClick={() => go(n.key)} />
-        ))}
+        {staff && <>
+          <div style={{ flex: 1 }} />
+          <button className="btn sm" onClick={() => go(view === 'review' || view === 'regintel' || view === 'health' ? 'dashboard' : 'review')}>
+            <Ic name="eye" />
+            {view === 'review' || view === 'regintel' || view === 'health' ? 'Switch to client view' : 'Switch to staff view'}
+          </button>
 
-        <div style={{ flex: 1 }} />
+          {(view === 'review' || view === 'regintel' || view === 'health') && <>
+            {staffItems.map(n => (
+              <NavItem key={n.key} icon={n.icon} label={n.label} active={view === n.key} onClick={() => go(n.key)} />
+            ))}
+          </>}
+        </>}
+
+        {!staff && <div style={{ flex: 1 }} />}
 
         <div className="row g12" style={{ padding: '10px 8px', borderTop: '1px solid var(--line)', marginTop: 12 }}>
           <div className="avatar">{initials}</div>
           <div>
-            <div style={{ fontWeight: 600, fontSize: 14 }}>{session.user.email?.split('@')[0]}</div>
-            <div className="t-xs faint">{myRole || 'member'}{staff ? ` · staff` : ''}</div>
-            {orgs?.length === 1 && <div className="t-xs faint">{orgs[0].name}</div>}
+            <div style={{ fontWeight: 600, fontSize: 14 }}>{userName}</div>
+            <div className="t-xs faint">Compliance Professional</div>
+            {orgs?.length >= 1 && <div className="t-xs faint">{org?.name || orgs[0]?.name}</div>}
           </div>
         </div>
         <button className="btn sm" onClick={() => supabase.auth.signOut()}>Sign out</button>
@@ -175,23 +202,23 @@ function Shell({ session, roles, deepObligation }) {
       {/* ─── main area ─── */}
       <main className="main">
         <div className="top" style={{ justifyContent: 'space-between' }}>
-          <div>
+          <div className="row g12">
             <h1 className="t-h1">{topTitle}</h1>
-            {topSub && <div className="t-sm faint">{topSub}</div>}
           </div>
-          <div className="row g8">
+          <div className="row g8 wrap">
+            {topSub && <span className="t-sm faint">{topSub}</span>}
             <ThemeToggle />
             {view === 'dashboard' && <button className="btn primary sm hide-m" onClick={() => go('companies')}><Ic name="plus" />Add client</button>}
           </div>
         </div>
-        <div className="page" style={{ padding: 20, flex: 1 }}>{body}</div>
+        <div key={viewKey} className="page" style={{ padding: 20, flex: 1 }}>{body}</div>
       </main>
 
       {/* ─── bottom tabbar (mobile) ─── */}
       <nav className="tabbar" aria-label="Main">
         <button aria-current={view === 'dashboard' ? 'page' : undefined} onClick={() => go('dashboard')}><Ic name="grid" className="ic-lg" />Workspace</button>
-        <button aria-current={view === 'companies' ? 'page' : undefined} onClick={() => go('companies')}><Ic name="building" className="ic-lg" />Companies</button>
-        <button aria-current={view === 'compliance' ? 'page' : undefined} onClick={() => go('compliance')}><Ic name="shield" className="ic-lg" />Compliance</button>
+        <button aria-current={view === 'companies' ? 'page' : undefined} onClick={() => go('companies')}><Ic name="building" className="ic-lg" />Clients</button>
+        <button aria-current={view === 'ask' ? 'page' : undefined} onClick={() => go('ask')}><Ic name="chat" className="ic-lg" />Ask</button>
         {staff
           ? <button aria-current={['review', 'regintel', 'health'].includes(view) ? 'page' : undefined} onClick={() => go('review')}><Ic name="eye" className="ic-lg" />Staff</button>
           : <button aria-current={view === 'notifications' ? 'page' : undefined} onClick={() => go('notifications')}><Ic name="bell" className="ic-lg" />Alerts</button>
